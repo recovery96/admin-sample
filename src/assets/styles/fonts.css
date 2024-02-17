@@ -1,0 +1,17 @@
+@font-face {
+  font-family: 'Main-Bold';
+  src: url('/fonts/Main_Bold.woff') format('woff');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'Main-Medium';
+  src: url('/fonts/Main_Medium.woff') format('woff');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Main-Light';
+  src: url('/fonts/Main_Light.woff') format('woff');
+  font-weight: 300;
+}
