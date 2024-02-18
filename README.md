@@ -81,7 +81,8 @@ VITE_SERVER_URL=http://127.0.0.1:8080
 name: Deploy to S3
 
 on:
-  push: # 'sample-*' 패턴을 가진 태그가 push되면 워크플로우가 동작합니다.
+  # 'sample-*' 패턴을 가진 태그가 push되면 워크플로우가 동작합니다.
+  push:
     tags:
       - 'sample-*'
 
