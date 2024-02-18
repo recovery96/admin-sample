@@ -90,23 +90,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-			# 레파지토리의 코드를 체크아웃합니다.
+      # 레파지토리의 코드를 체크아웃합니다.
       - name: Checkout code
         uses: actions/checkout@v3
 
-			# Node를 설정합니다.
+      # Node를 설정합니다.
       - name: Setup Node.js 18.19.0.
         uses: actions/setup-node@v3
-				# 사용할 Node 버전을 지정합니다.
+        # 사용할 Node 버전을 지정합니다.
         with:
           node-version: '18.19.0'
 
-			# 의존성을 설치하고 프로젝트를 빌드합니다.
+      # 의존성을 설치하고 프로젝트를 빌드합니다.
       - name: Install dependencies and build
         run: |
           npm install
           npm run build
-				# 환경 변수를 설정합니다.
+        # 환경 변수를 설정합니다.
         env:
           VITE_SERVER_URL: ${{ vars.VITE_SERVER_URL }}
 
@@ -118,17 +118,17 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_S3_BUCKET_REGION }}
 
-			# 빌드된 파일들을 S3 버킷에 업로드합니다.
+      # 빌드된 파일들을 S3 버킷에 업로드합니다.
       - name: Upload to S3
-				# dist 폴더 내의 파일들을 S3 버킷으로 동기화합니다.
+        # dist 폴더 내의 파일들을 S3 버킷으로 동기화합니다.
         # index.html은 캐시 제어 옵션을 다르게 설정하면서 따로 업로드합니다.
         run: |
           aws s3 sync ./dist s3://${{ secrets.AWS_S3_BUCKET_NAME }} --exclude "index.html" --follow-symlinks --delete
           aws s3 cp ./dist/index.html s3://${{ secrets.AWS_S3_BUCKET_NAME }}/index.html --cache-control "max-age=0, s-maxage=86400, no-cache, must-revalidate"
 
-			# CloudFront 캐시를 무효화합니다.
+      # CloudFront 캐시를 무효화합니다.
       - name: Invalidate CloudFront Distribution
-				# index.html에 대한 캐시 무효화 명령을 실행합니다.
+        # index.html에 대한 캐시 무효화 명령을 실행합니다.
         run: |
           aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/index.html"
 ```
