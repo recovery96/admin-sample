@@ -133,3 +133,46 @@ jobs:
         run: |
           aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/index.html"
 ```
+
+## Vite 구성
+
+```ts
+export default defineConfig({
+  plugins: [
+    react(),
+    splitVendorChunkPlugin(),
+    visualizer({
+      filename: './dist/report.html',
+      open: true,
+      brotliSize: true,
+    }),
+  ],
+  resolve: {
+    alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
+  },
+  server: {
+    host: '127.0.0.1',
+    port: 8080,
+  },
+  preview: {
+    port: 8080,
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        // manualChunks 옵션을 통해 라이브러리들을 청크로 나누어,
+        // 브라우저 캐싱을 최적화하고, 최종 번들의 크기를 줄이며, 로딩 시간을 개선합니다.
+        manualChunks: {
+          'react-libs': ['react', 'react-dom'],
+          'routing-libs': ['react-router-dom'],
+          'ui-libs': ['@mui/icons-material', '@mui/lab', '@mui/material'],
+          'state-management-libs': ['@tanstack/react-query', 'recoil'],
+          'form-libs': ['react-hook-form', '@hookform/resolvers', 'zod'],
+          'date-libs': ['dayjs'],
+          'utils-libs': ['axios'],
+        },
+      },
+    },
+  },
+})
+```
