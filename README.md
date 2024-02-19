@@ -124,8 +124,8 @@ jobs:
         # dist 폴더 내의 파일들을 S3 버킷으로 동기화합니다.
         # index.html은 캐시 제어 옵션을 다르게 설정하면서 따로 업로드합니다.
         run: |
-          aws s3 sync ./dist s3://${{ secrets.AWS_S3_BUCKET_NAME }} --exclude "index.html" --follow-symlinks --delete
-          aws s3 cp ./dist/index.html s3://${{ secrets.AWS_S3_BUCKET_NAME }}/index.html --cache-control "max-age=0, s-maxage=86400, no-cache, must-revalidate"
+          aws s3 sync ./dist s3://${{ secrets.AWS_S3_BUCKET_NAME }} --exclude "index.html" --follow-symlinks --delete --cache-control "max-age=31536000"
+          aws s3 cp ./dist/index.html s3://${{ secrets.AWS_S3_BUCKET_NAME }}/index.html --cache-control "max-age=0, s-maxage=31536000"
 
       # CloudFront 캐시를 무효화합니다.
       - name: Invalidate CloudFront Distribution
